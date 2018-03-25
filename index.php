@@ -9,6 +9,9 @@ JQUERY MOBILE
 	http://www.w3schools.com/jquerymobile/
 	http://demos.jquerymobile.com/1.4.5/forms/
 */
+
+$preselect = false;
+// $preselect = true;
 ?>
 <!DOCTYPE html>
 <html lang="en-UK">
@@ -19,33 +22,162 @@ JQUERY MOBILE
 		<style>
 			body {font-family:arial,helvetica,sans-serif;}
 			table.ratioTable {border-collapse:collapse;}
-			table.ratioTable th {border:1px solid black;}
-			table.ratioTable td {border:1px solid black;}
+			table.ratioTable th, table.ratioTable td {border:1px solid #777;}
 			table.ratioTable label {}
 			table.ratioTable input {width:4em;}
 			.unitSwitcher .ui-slider-switch { width: 9em }
 			div.resultBox {text-shadow:none;font-size:0.8em;}
+			.cadenceInput {width:200px!important;}
 		</style>
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$("input").change(function(){
-					if (this.name.indexOf('chainring') === 0) recalculateForChainring(this);
-					else if (this.name.indexOf('gear') === 0) recalculateForSprocket(this);
-					else if (this.name.indexOf('targetCadence') === 0) recalculateAll();
-					else if (this.name.indexOf('unitToggler') === 0) recalculateAll();
-				});
-				$("select").change(function(){
-					if (this.name.indexOf('tyreDiameter') === 0) recalculateAll();
-					else if (this.name.indexOf('chainringCount') === 0) updateChainringCount();
-					else if (this.name.indexOf('sprocketCount') === 0) updateSprocketCount();
-					else if (this.name.indexOf('wheelDiameter') === 0) recalculateAll();
-				});
-				setDefaults();
+				gears = {
+					chainringCount: 0,
+					sprocketCount: 0,
+					chainrings: [],
+					sprockets: [],
+					wheelDiameter: 0,
+					tyreDiameter: 0,
+					targetCadence: 0,
+					units: metric,
+					varDump: function() {
+						// console.log(this);
+						console.log(JSON.parse(JSON.stringify(this)));
+					},
+					initialise: function() {
+						var self = this;
+						$("#clearAll").click(function(){self.clearAll()});
+						$("#setMyDefaults").click(function(){
+							self.setMyDefaults()
+							self.recalculate()
+						});
+						$("input").change(function(){
+							if (this.name.indexOf('targetCadence') === 0) self.targetCadence = Number(this.value);
+							// else if (this.name.indexOf('chainring') === 0) self.recalculate();
+							// else if (this.name.indexOf('gear') === 0) self.recalculate();
+							// else if (this.name.indexOf('unitToggler') === 0) self.recalculate();
+							self.recalculate()
+						});
+						$("select").change(function(){
+							if (this.name.indexOf('tyreDiameter') === 0) self.tyreDiameter = Number(this.value);
+							else if (this.name.indexOf('chainringCount') === 0) self.chainringCount = Number(this.value);
+							else if (this.name.indexOf('sprocketCount') === 0) self.sprocketCount = Number(this.value);
+							else if (this.name.indexOf('wheelDiameter') === 0) self.wheelDiameter = Number(this.value);
+							self.recalculate()
+						});
+						// this.setMyDefaults();
+					},
+					setMyDefaults: function() {
+						// SET UP MY DEFAULT VALUES
+						$('[name=wheelDiameter]').val(622).selectmenu("refresh", true);
+						$('[name=tyreDiameter]').val(50).selectmenu("refresh", true);
+						$('[name=targetCadence]').val(90);
+						$('[name=sprocketCount]').val(9).selectmenu("refresh", true);
+						$('[name=chainringCount]').val(3).selectmenu("refresh", true);
+						var sprockets = [11,12,14,15,17,19,21,24,27]
+						var chainrings = [50,39,30];
+						this.chainringCount = 3;
+						this.sprocketCount = 9;
+						for (c = 1; c < 4; c++) $('[name=chainring'+c+']').val(chainrings[c-1]);
+						for (g = 1; g < 10; g++) $('[name=gear'+g+']').val(sprockets[g-1]);
+						this.recalculate();
+					},
+					recalculate: function() {
+						this.updateChainrings();
+						this.updateSprockets();
+						this.wheelDiameter = Number($('[name=wheelDiameter]').val());
+						this.tyreDiameter = Number($('[name=tyreDiameter]').val());
+						this.targetCadence = Number($('[name=targetCadence]').val());
+						if (this.chainrings.length && this.sprockets.length) {
+							derailleurCapacity = Math.max.apply(Math, this.chainrings) - Math.min.apply(Math, this.chainrings) + Math.max.apply(Math, this.sprockets) - Math.min.apply(Math, this.sprockets);
+							$('#derailleurCapacity').text(derailleurCapacity + ' ('+Math.max.apply(Math, this.chainrings)+'-'+Math.min.apply(Math, this.chainrings)+'+'+Math.max.apply(Math, this.sprockets)+'-'+Math.min.apply(Math, this.sprockets)+')');
+							for (crank=0; crank < this.chainrings.length; crank++) {
+								for (sprocket=0; sprocket < this.sprockets.length; sprocket++) {
+									if (this.chainrings[crank] && this.sprockets[sprocket]) {
+										var ratio = Number(this.chainrings[crank]/this.sprockets[sprocket]).toFixed(2);
+										var output = 'Ratio='+ratio + ':1';
+										if (this.wheelDiameter) {
+											output += '<br />MD='+this.getUnitValue((((this.wheelDiameter + this.tyreDiameter) * 3.141 * ratio)/1000), 'm');
+											output += '<br />ED='+this.getUnitValue(((this.wheelDiameter + this.tyreDiameter) * ratio), 'mm');
+											output += '<br />GI='+(((this.wheelDiameter + this.tyreDiameter) / 25.4) * ratio).toFixed(0) + 'in';
+											if (this.targetCadence) {
+												var speed = (((this.wheelDiameter + this.tyreDiameter) * 3.141) * ratio * this.targetCadence * 60) / 1000000;
+												output += '<br />'+this.getUnitValue(speed,'km/h')+'@'+this.targetCadence+'rpm';
+											}
+										}
+										$('.chainring'+(crank+1) +'gear'+(sprocket+1)).css('background-color','hsl('+this.getHue(ratio)+', 100%, 50%)');
+										$('.chainring'+(crank+1) +'gear'+(sprocket+1)).html('<div class="resultBox" style="background-color:hsl('+this.getHue(ratio)+', 100%, 50%);">'+output+'</div>');
+									}
+								}
+							}
+						}
+					},
+					getUnitValue: function(value, unit) {
+						// RECEIVES A METRIC VALUE/UNIT & RETURNS IN IMPERIAL IF REQUIRED
+						if ($('[name=unitToggler]:checked').val() == 'metric') return value.toFixed(2) + unit;
+						if (unit == 'km/h') return (value * 0.621371192).toFixed(2) + 'mph';
+						if (unit == 'm') return (value * 3.2808399).toFixed(2) + 'ft';
+						if (unit == 'mm') return (value /25.4).toFixed(2) + 'in';
+					},
+					getHue: function(ratio) {
+						return ((5 - ratio) * 20).toFixed(0);
+						// return ((5 - ratio) * 50).toFixed(0);
+					},
+					updateChainrings: function() {
+						var chainringCount = $('[name=chainringCount]').val();
+						var chainrings = [];
+						for (c = 1; c < this.chainringCount; c++) {
+							var el = $('.chainringCol'+c);
+							if (chainringCount < c) el.hide();
+							else {
+								el.show();
+								chainrings.push(Number($('[name=chainring'+c+']').val()));
+							}
+						}
+						this.chainrings = chainrings;
+						this.chainringCount = chainringCount;
+					},
+					updateSprockets: function() {
+						var sprocketCount = $('[name=sprocketCount]').val();
+						var sprockets = [];
+						for (c = 1; c < this.sprocketCount; c++) {
+							var el = $('.chainringCol'+c);
+							if (sprocketCount < c) el.hide();
+							else {
+								el.show();
+								sprockets.push(Number($('[name=gear'+c+']').val()));
+							}
+						}
+						this.sprockets = sprockets;
+						this.sprocketCount = sprocketCount;
+					},
+					clearAll: function() {
+						for (c = 1; c < 4; c++) $('[name=chainring'+c+']').val('');
+						for (g = 1; g < 12; g++) $('[name=gear'+g+']').val('');
+						this.chainrings = [];
+						this.sprockets = [];
+						$('[name=wheelDiameter]').val(0).selectmenu("refresh", true);
+						this.wheelDiameter = 0;
+						$('[name=chainringCount]').val(0).selectmenu("refresh", true);
+						this.chainringCount = 0;
+						$('[name=sprocketCount]').val(0).selectmenu("refresh", true);
+						this.sprocketCount = 0;
+						$('[name=tyreDiameter]').val(0).selectmenu("refresh", true);
+						this.tyreDiameter = 0;
+						$('[name=targetCadence]').val('');
+						this.targetCadence = null;
+						this.recalculate();
+					}
+				};
+				
+				
+				gears.initialise()
+				// setDefaults();
 			});
-			
+/* 
 			function updateSprocketCount() {
 				var sprocketCount = $('[name=sprocketCount]').val();
 				for (c = 1; c < 12; c++) {
@@ -68,8 +200,8 @@ JQUERY MOBILE
 				$('[name=tyreDiameter]').val(50).selectmenu("refresh", true);
 				$('[name=targetCadence]').val(90);
 				var gears = [11,12,14,15,17,19,21,24,27]
-				var cranks = [50,39,30];
-				for (c = 1; c < 4; c++) $('[name=chainring'+c+']').val(cranks[c-1]);
+				var chainrings = [50,39,30];
+				for (c = 1; c < 4; c++) $('[name=chainring'+c+']').val(chainrings[c-1]);
 				for (g = 1; g < 10; g++) $('[name=gear'+g+']').val(gears[g-1]);
 				$('[name=sprocketCount]').val(9).selectmenu("refresh", true);
 				$('[name=chainringCount]').val(3).selectmenu("refresh", true);
@@ -158,6 +290,7 @@ JQUERY MOBILE
 				$('[name=targetCadence]').val('');
 				recalculateAll()
 			}
+ */
 		</script>
 	</head>
 
@@ -166,26 +299,30 @@ JQUERY MOBILE
 			<div data-role="main" class="ui-content">
 				<a href="#infoPage" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-left ui-mini ui-shadow">Info</a>
 				<a href="#settingsPage" class="ui-btn ui-btn-inline ui-icon-gear ui-btn-icon-left ui-mini ui-shadow">Settings</a>
-				<button type="button" class="ui-btn ui-btn-inline ui-icon-recycle ui-btn-icon-left ui-mini ui-shadow" onclick="clearAll();">Clear data</button>
+				<button type="button" class="ui-btn ui-btn-inline ui-icon-recycle ui-btn-icon-left ui-mini ui-shadow" id="clearAll">Clear data</button>
+				<button type="button" class="ui-btn ui-btn-inline ui-icon-recycle ui-btn-icon-left ui-mini ui-shadow" id="setMyDefaults">My settings</button>
 				
 				<div data-role="fieldcontain">
 					<label for="chainringCount">Chainrings:</label>
 					<select name="chainringCount" data-inline="true">
-						<?php for($x=1;$x<4;$x++) echo '<option value="'.$x.'"'.($x==2 ? ' selected="selected"' : '').'>'.$x.'</option>'; ?>
+						<option value="0">Select</option>
+						<?php for($x=1;$x<7;$x++) echo '<option value="'.$x.'"'.($preselect && $x==2 ? ' selected="selected"' : '').'>'.$x.'</option>'; ?>
 					</select>
 				</div>
 				<div data-role="fieldcontain">
 					<label for="sprocketCount">Sprockets:</label>
 					<select name="sprocketCount" data-inline="true">
-						<?php for($x=1;$x<12;$x++) echo '<option value="'.$x.'"'.($x==9 ? ' selected="selected"' : '').'>'.$x.'</option>'; ?>
+						<option value="0">Select</option>
+						<?php for($x=1;$x<12;$x++) echo '<option value="'.$x.'"'.($preselect && $x==9 ? ' selected="selected"' : '').'>'.$x.'</option>'; ?>
 					</select>
 				</div>
 				<div data-role="fieldcontain">
 					<label for="wheelDiameter">Wheel Diameter (mm):</label>
 					<!--<input name="wheelDiameter" placeholder="Wheel Diameter (mm)" type="number" />-->
 					<select name="wheelDiameter" data-inline="true">
+						<option value="0">Select</option>
 						<option value="630">27inch (630mm)</option>
-						<option value="622" selected="selected">700c/29er (622mm)</option>
+						<option value="622"<?php echo ($preselect ? ' selected="selected"' : ''); ?>>700c/29er (622mm)</option>
 						<option value="584">650b/27.5 (584mm)</option>
 						<option value="571">650c (571mm)</option>
 						<option value="559">26inch (559mm-mtb)</option>
@@ -200,12 +337,13 @@ JQUERY MOBILE
 				<div data-role="fieldcontain">
 					<label for="tyreDiameter">Tyre Diameter (mm):</label>
 					<select name="tyreDiameter" data-inline="true">
-						<?php foreach(array('Select'=>0,'18c'=>36,'23c'=>46,'25c'=>50,'28c'=>56,'32c'=>64,'35c'=>70,'47c'=>94) as $tyre=>$diameter) echo '<option value="'.$diameter.'"'.($diameter==50 ? ' selected="selected"' : '').'>'.$tyre.'</option>'; ?>
+						<option value="0">Select</option>
+						<?php foreach(array('18c'=>36,'23c'=>46,'25c'=>50,'28c'=>56,'32c'=>64,'35c'=>70,'47c'=>94) as $tyre=>$diameter) echo '<option value="'.$diameter.'"'.($preselect && $diameter==50 ? ' selected="selected"' : '').'>'.$tyre.'</option>'; ?>
 					</select>
 				</div>
 				<div data-role="fieldcontain">
 					<label for="targetCadence">Target cadence (rpm):</label>
-					<input name="targetCadence" placeholder="Target cadence (rpm)" type="number" data-inline="true" />
+					<input data-inline="true" data-wrapper-class="cadenceInput" name="targetCadence" placeholder="Target cadence (rpm)" type="number"<?php echo ($preselect ? 'value="90"' : ''); ?> />
 				</div>
 				<!--<div class="unitSwitcher">
 					<label for="unitToggler" class="ui-hidden-accessible">Units:</label>
@@ -232,11 +370,11 @@ JQUERY MOBILE
 					<tr>
 						<th></th>
 						<?php
-						for ($chainring=1;$chainring<4;$chainring++) echo '<th class="chainringCol'.$chainring.'"><input placeholder="Chainring '.$chainring.'"type="number" name="chainring'.$chainring.'" data-mini="true" /></th>';
+						for ($chainring=1;$chainring<6;$chainring++) echo '<th class="chainringCol'.$chainring.'"><input placeholder="Chainring '.$chainring.'"type="number" name="chainring'.$chainring.'" data-mini="true" /></th>';
 						?>
 					</tr>
 					<?php
-					for ($cassette=1;$cassette<12;$cassette++) {
+					for ($cassette=1;$cassette<15;$cassette++) {
 						echo '<tr class="gearRow'.$cassette.'"><th><input placeholder="Gear '.$cassette.'"type="number" name="gear'.$cassette.'" data-mini="true" /></th><td class="chainringCol1 chainring1gear'.$cassette.'"></td><td class="chainringCol2 chainring2gear'.$cassette.'"></td><td class="chainringCol3 chainring3gear'.$cassette.'"></td></tr>';
 					}
 					?>
@@ -263,4 +401,4 @@ JQUERY MOBILE
 			</div>
 		</div>
 	</body>
-</html>
+</html>git status
