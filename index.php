@@ -1,4 +1,6 @@
 <?php
+
+
 /* REFERENCES:
 TYRE SIZES
 	http://www.ctc.org.uk/cyclists-library/components/wheels-tyres/tyre-sizes
@@ -9,6 +11,7 @@ JQUERY MOBILE
 	http://www.w3schools.com/jquerymobile/
 	http://demos.jquerymobile.com/1.4.5/forms/
 */
+
 
 $preselect = false;
 $maxChainrings = 3;
@@ -37,6 +40,7 @@ $useBootstrap = false;
 			table.resultTable th, table.resultTable td {font-size:.8em;border:1px solid #777;}
 			.cadenceInput, .crankLengthInput {width:200px!important;}
 			.chainringInput, .sprocketInput {width:120px!important;}
+			p.noScript {margin:0 auto;width:80%;background-color:red;color:white;font-weight:bold;padding:10px;text-align:center;border-radius:5px;}
 			
 			/* @media only screen and (min-width: 980px){
 				.ui-page, ui-footer {
@@ -91,11 +95,20 @@ $useBootstrap = false;
 						});
 					},
 					usePreset: function(selectedPreset) {
-						if (!selectedPreset) selectedPreset = 'chris';
+						if (!selectedPreset) selectedPreset = 'chrisPeloton';
 						var self = this;
 						this.clearAll();
 						var presets = {
-							chris: {
+							chrisAgree: {
+								chainrings: [50,34], 
+								sprockets: [11,12,13,14,15,17,19,21,23,25,28], 
+								wheelDiameter: 622, 
+								tyreDiameter: 50, 
+								crankLength: 172.5, 
+								targetCadence: 90, 
+								units: 'imperial'
+							},
+							chrisPeloton: {
 								chainrings: [50,39,30], 
 								sprockets: [11,12,14,15,17,19,21,24,27], 
 								wheelDiameter: 622, 
@@ -193,39 +206,42 @@ $useBootstrap = false;
 							for (crank=0; crank < this.chainrings.length; crank++) {
 								$('th.chainring'+(crank +1)).text(this.chainrings[crank]).show();
 								for (sprocket=0; sprocket < this.sprockets.length; sprocket++) {
-									$('tr.sprocket'+(sprocket +1)).show();
+									$('.sprocket'+(sprocket +1)).show();
 									$('th.sprocket'+(sprocket +1)).text(this.sprockets[sprocket]);
 									$('.chainring'+(crank +1) + 'sprocket'+(sprocket +1)).show();
 									if (this.chainrings[crank] && this.sprockets[sprocket]) {
+										// RATIO = CHAINRING TOOTHCOUNT / SPROCKET TOOTHCOUNT : 1
 										var ratio = Number(this.chainrings[crank]/this.sprockets[sprocket]).toFixed(2);
 										var output = 'Ratio='+ratio + ':1';
 										if (this.wheelDiameter) {
+											// METRES DEVELOPMENT = (WHEEL DIAMETER + TYRE DIAMETER) * PI * RATIO
 											output += '<br />MD='+this.getUnitValue((((this.wheelDiameter + this.tyreDiameter) * 3.141 * ratio)/1000), 'm');
-											// output += '<br />ED='+this.getUnitValue(((this.wheelDiameter + this.tyreDiameter) * ratio), 'mm');
-											// output += '<br />GI='+(((this.wheelDiameter + this.tyreDiameter) / 25.4) * ratio).toFixed(0) + 'in';
+											// GEAR INCHES = (WHEEL + TYRE DIAMETER IN INCHES) * (CHAINRING TOOTHCOUNT / SPROCKET TOOTHCOUNT)
 											output += '<br />GI='+this.getUnitValue(((this.wheelDiameter + this.tyreDiameter) * ratio)/10, 'cm');
 											if (this.crankLength) {
-												//  ((wheel + tyre radius) / crank length) * gear ratio
+												//  GAIN RATIO = ((WHEEL + TYRE RADIUS) / CRANK LENGTH) * GEAR RATIO
 												var gr = ((((this.wheelDiameter + this.tyreDiameter) / 2) / this.crankLength) * ratio).toFixed(2);
 												output += '<br />GR='+gr;
 											}
 											if (this.targetCadence) {
+												// SPEED = ((WHEEL DIAMETER + TYRE DIAMETER) * PI) * RATIO * CADENCE * 60
 												var speed = (((this.wheelDiameter + this.tyreDiameter) * 3.141) * ratio * this.targetCadence * 60) / 1000000;
 												output += '<br />'+this.targetCadence+'rpm='+this.getUnitValue(speed,'km/h');
 											}
 										}
-										if ($('#showColours').is(':checked')) $('.chainring'+(crank+1) +'sprocket'+(sprocket+1)).css('background-color','hsl('+this.getHue(ratio)+', 100%, 50%)');
+										if ($('[name=colourToggler]:checked').val() == 1) $('.chainring'+(crank+1) +'sprocket'+(sprocket+1)).css('background-color','hsl('+this.getHue(ratio)+', 100%, 50%)');
 										else $('.chainring'+(crank+1) +'sprocket'+(sprocket+1)).css('background-color','transparent');
 										$('.chainring'+(crank+1) +'sprocket'+(sprocket+1)).html(output);
+										
+										if (this.sprockets.length >=2) {
+											derailleurCapacityVal = Math.max.apply(Math, this.chainrings) - Math.min.apply(Math, this.chainrings) + Math.max.apply(Math, this.sprockets) - Math.min.apply(Math, this.sprockets);
+											derailleurCapacityText = '('+Math.max.apply(Math, this.chainrings)+'-'+Math.min.apply(Math, this.chainrings)+')+('+Math.max.apply(Math, this.sprockets)+'-'+Math.min.apply(Math, this.sprockets)+') = '+derailleurCapacityVal;
+											$('#derailleurCapacity').text('Derailleur capacity: '+derailleurCapacityText).show();
+										}
 									}
 								}
 							}
-							if (this.sprockets.length >=2) {
-								derailleurCapacityVal = Math.max.apply(Math, this.chainrings) - Math.min.apply(Math, this.chainrings) + Math.max.apply(Math, this.sprockets) - Math.min.apply(Math, this.sprockets);
-								derailleurCapacityText = '('+Math.max.apply(Math, this.chainrings)+'-'+Math.min.apply(Math, this.chainrings)+')+('+Math.max.apply(Math, this.sprockets)+'-'+Math.min.apply(Math, this.sprockets)+') = '+derailleurCapacityVal;
-								$('#derailleurCapacity').text('Derailleur capacity: '+derailleurCapacityText).show();
-							}
-							$('.resultTable').show();
+							$('.resultTable.'+$('[name=orientationToggler]:checked').val()).show();
 						}
 						else {
 							$('#derailleurCapacity').hide()
@@ -242,7 +258,6 @@ $useBootstrap = false;
 					},
 					getHue: function(ratio) {
 						return ((5 - ratio) * 20).toFixed(0);
-						// return ((5 - ratio) * 50).toFixed(0);
 					},
 					getChainrings: function() {
 						var chainringsTemp = [];
@@ -286,19 +301,43 @@ $useBootstrap = false;
 						$('.result').hide();
 					}
 				};
-				
-				
 				gears.initialise()
-				// setDefaults();
 			});
 
 		</script>
 	</head>
 
 	<body>
+		<noscript>
+			<p class="noScript">You appear not to have Javascript enabled so this tool will not work for you!</p>
+		</noscript>
+		
+		<div data-role="page" id="infoPage">
+			<div data-role="main" class="ui-content">
+				<h1>Bike Gearing Calculator</h1>
+				<p><b>Usage:</b> on the calculator page you can enter cassette &amp; chainring sizes, crank length, tyre &amp; wheel diameter etc. Based upon the info you enter you will be able to see the results described below.</p>
+				<p>There are several presets saved with common gear configurations (and a couple of my bikes) which can be useful for a quick starting point. If you want me to store your bike data as a preset send me the figures.</p>
+				<ul>
+					<li><b>Ratio:</b> Gear Ratio describes the rotations of the output gear in relation to rotations from the input gear. A ratio of 3:1 would mean that the wheel would rotate 3 times for each rotation of the chainring.</li>
+					<li><b>MD:</b> Metres of Development (<a href="https://en.wikipedia.org/wiki/Gear_inches#Relationship_to_metres_of_development" target="_blank" title="Click here for Wikipedias explanation">wiki</a>)  describes the distance the bike will travel for each full pedal revolution.<br />The formula is <i>(wheel diameter + tyre diameter) &times; &pi; &times; gear ratio</i></li>
+					<li><b>GI:</b> Gear Inches (<a href="https://en.wikipedia.org/wiki/Gear_inches" target="_blank" title="Click here for Wikipedias explanation">wiki</a>) also known as Effective Diameter, describes gear ratios in terms of the diameter of an equivalent directly driven wheel if the pedals were fixed to that wheel (like a Penny Farthing).<br />The formula to calculate it is <i>(wheel + tyre diameter in inches) &times; (chainring toothcount &divide; sprocket toothcount)</i></li></li>
+					<li><b>GR:</b> Gain Ratio is a Sheldon Brown innovation. Traditional measurements (GI, MD etc.) don't allow for the dis/advantage of pedal arm (crank) length and also make easy comparison of different gearing tricky (46/16 is the same as 53/19 - if the crank lengths are the same) so Sheldon Brown proposed a gear measurement system called <a href="http://sheldonbrown.com/gain.html" target="_blank" title="Click here for Sheldons explanation!">&quot;gain ratio&quot;</a>. It describes the ratio of distance travelled by the bike relative to the radial distance moved of the pedals.<br />His formula is <i>((wheel + tyre radius) &divide; crank length) &times; gear ratio</i>. The benefits of this include:
+						<ol>
+							<li>Given 2 identically geared/wheeled bikes you can see a numerical representation of the mechanical dis/advantage if they have different crank lengths.</li>
+							<li>It's <a href="https://en.wikipedia.org/wiki/Dimensionless_quantity" target="_blank">dimensionless</a>, so whether you supply the measurements in inches, mm or microns the resulting value is the same.</li>
+							<li>It&#39;s like a universal language for comparing gearing, all reduced to a single number!</li>
+						</ol></li>
+					<li><b>Speed/cadence:</b> Optionally add a target cadence to see the speed each gear will achieve at that cadence.<br />The formula is <i>km/h = ((wheel diameter(mm) + tyre diameter(mm)) &times; &pi;) &times; ratio &times; cadence &times; 60 / 100,000</i></li>
+					<li><b>Derailleur capacity:</b> This will tell you what capacity derailleur you should be looking for based upon your crank &amp; cassette.<br />The formula to calculate it is <i>(largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)</i></li>
+				</ul>
+				<a href="#resultPage" class="ui-btn ui-btn-inline ui-icon-grid ui-btn-icon-left ui-mini ui-shadow">Go to calculator</a>
+			</div>
+		</div>
+		
+		
 		<div data-role="page" id="resultPage">
 			<div data-role="main" class="ui-content">
-				<a href="#infoPage" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-left ui-mini ui-shadow">Info</a>
+				<a href="#infoPage" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-left ui-mini ui-shadow">Home/Info</a>
 				<button class="ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="clearAll">Clear data</button>
 					<select name="presets" data-icon="gear" data-inline="true" data-mini="true">
 						<option value="0">Load a preset</option>
@@ -311,22 +350,13 @@ $useBootstrap = false;
 						<option value="standard09">9spd standard 12-25</option>
 						<option value="standard10">10spd standard 12-25</option>
 						<option value="standard11">11spd standard 11-28</option>
+						<option value="chrisAgree">Chris&#39;s Cube Agree</option>
 						</optgroup>
 						<optgroup label="Triple chainset">
 						<option value="triple09">9spd triple 12-25</option>
-						<option value="chris">Chris&#39;s triple 11-27</option>
+						<option value="chrisPeloton">Chris&#39;s Cube Peloton</option>
 						</optgroup>
 					</select>
-				<!--
-				<button class="preset ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="chris">Chris</button>
-				<button class="preset ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="compact09">Compact 9spd</button>
-				<button class="preset ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="compact10">Compact 10spd</button>
-				<button class="preset ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="compact11">Compact 11spd</button>
-				<button class="preset ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="standard09">Standard 9spd</button>
-				<button class="preset ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="standard10">Standard 10spd</button>
-				<button class="preset ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="standard11">Standard 11spd</button>
-				<button class="preset ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="triple09">Triple 9spd</button>
-				-->
 				
 				<div data-role="fieldcontain">
 					<label for="chainring1" title="Chainring &amp; sprocket data is required! Add 1-3 rings and 1-11 sprockets">Chainrings:</label>
@@ -373,6 +403,16 @@ $useBootstrap = false;
 				
 				
 				<div data-role="fieldcontain">
+					<label for="orientationToggler" title="You can display the results in a landscape or portait result table">Orientation:</label>
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="orientationToggler" id="portrait" value="portrait" checked="checked">
+						<label for="portrait">Portrait</label>
+						<input type="radio" name="orientationToggler" id="landscape" value="landscape">
+						<label for="landscape">Landscape</label>
+					</fieldset>
+				</div>
+				
+				<div data-role="fieldcontain">
 					<label for="unitToggler" title="You can select metric or imperial units for the results. This includes recalculating gear INCHES or METRES development into your chosen units, which might seem odd but actually makes sense!">Units:</label>
 					<fieldset data-role="controlgroup" data-type="horizontal">
 						<input type="radio" name="unitToggler" id="metric" value="metric" checked="checked">
@@ -381,66 +421,65 @@ $useBootstrap = false;
 						<label for="imperial">Imperial</label>
 					</fieldset>
 				</div>
-				<!--<p>
-				<label for="unitToggler">Units:</label>
-				<input type="radio" name="unitToggler" id="metric" value="metric" checked="checked">
-				<label for="metric">Metric</label>
-				<input type="radio" name="unitToggler" id="imperial" value="imperial">
-				<label for="imperial">Imperial</label>
-				</p>-->
-				
 				
 				<div data-role="fieldcontain">
-					<label for="showColours" title="The results table is colour coded by default showing how relatively hard (red) or easy (green) each of the gears is to pedal in. On some displays the colouring makes the text tricky to read so you can toggle the colouring here.">Show colours</label>
-					<input type="checkbox" id="showColours" name="showColours" checked="checked">
+					<label for="colourToggler" title="The results table is colour coded by default showing how relatively hard (red) or easy (green) each of the gears is to pedal in. On some displays the colouring makes the text tricky to read so you can toggle the colouring here.">Colours:</label>
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<input type="radio" name="colourToggler" id="colourOn" value="1" checked="checked">
+						<label for="colourOn">Coloured</label>
+						<input type="radio" name="colourToggler" id="colourOff" value="0">
+						<label for="colourOff">Plain</label>
+					</fieldset>
 				</div>
+				
 				<p id="derailleurCapacity"></p>
 				
-				<!--<table data-role="table" data-mode="reflow" class="ui-responsive table-stroke resultTable">-->
 				<table class="resultTable portrait">
 					<thead>
 						<tr>
 							<th></th>
-							<?php
-							for ($chainring=1;$chainring<=$maxChainrings;$chainring++) echo '<th class="chainringHeading chainring'.$chainring.'">Chainring '.$chainring.'</th>';
-							?>
+						<?php
+							for ($chainring=1;$chainring<=$maxChainrings;$chainring++) {
+								echo '<th class="chainringHeading chainring'.$chainring.'">Chainring '.$chainring.'</th>';
+							}
+						?>
 						</tr>
 					</thead>
 					<tbody>
-					<?php
-					for ($sprocket=1;$sprocket<=$maxSprockets;$sprocket++) {
-						echo '<tr class="sprocketHeading sprocket'.$sprocket.'">';
-						echo '<th class="sprocket'.$sprocket.'">Sprocket '.$sprocket.'</th>';
-						for ($chainring=1;$chainring<=$maxChainrings;$chainring++) {
-							echo '<td class="result chainring'.$chainring.'sprocket'.$sprocket.'">chainring'.$chainring.'sprocket'.$sprocket.'</td>';
-						}
-						echo '</tr>';
-					}
-					?>
+						<?php
+							for ($sprocket=1;$sprocket<=$maxSprockets;$sprocket++) {
+								echo '<tr>';
+								echo '<th class="sprocketHeading sprocket'.$sprocket.'">Sprocket '.$sprocket.'</th>';
+								for ($chainring=1;$chainring<=$maxChainrings;$chainring++) {
+									echo '<td class="result chainring'.$chainring.'sprocket'.$sprocket.'">chainring'.$chainring.'sprocket'.$sprocket.'</td>';
+								}
+								echo '</tr>';
+							}
+						?>
 					</tbody>
 				</table>
 				<table class="resultTable landscape">
 					<thead>
 						<tr>
 							<th></th>
-							<?php
+						<?php
 							for ($sprocket=1;$sprocket<=$maxSprockets;$sprocket++) {
-								echo '<th class="class="sprocketHeading sprocket'.$sprocket.'">Sprocket '.$sprocket.'</th>';
+								echo '<th class="sprocketHeading sprocket'.$sprocket.'">Sprocket '.$sprocket.'</th>';
 							}
-							?>
+						?>
 						</tr>
 					</thead>
 					<tbody>
-					<?php
+						<?php
 							for ($chainring=1;$chainring<=$maxChainrings;$chainring++) {
-								echo '<tr class="chainringHeading chainring'.$chainring.'">';
-								echo '<th class="chainring'.$chainring.'">Chainring '.$chainring.'</th>';
+								echo '<tr>';
+								echo '<th class="chainringHeading chainring'.$chainring.'">Chainring '.$chainring.'</th>';
 								for ($sprocket=1;$sprocket<=$maxSprockets;$sprocket++) {
 									echo '<td class="result chainring'.$chainring.'sprocket'.$sprocket.'">chainring'.$chainring.'sprocket'.$sprocket.'</td>';
 								}
 								echo '</tr>';
 							}
-					?>
+						?>
 					</tbody>
 				</table>
 			</div>
@@ -448,33 +487,5 @@ $useBootstrap = false;
 		
 		
 		
-		<div data-role="page" id="infoPage">
-			<div data-role="main" class="ui-content">
-				<a href="#resultPage" class="ui-btn ui-btn-inline ui-icon-grid ui-btn-icon-left ui-mini ui-shadow">Results</a>
-				<h1>Gear Ratio Calculator</h1>
-				<!--
-				<p>Use this tool to calculate info about your gear ratios. Just enter the tooth count of your chainring/s and gear/s to see the gear ratios available.</p>
-				<p>ED - Effective Diameter describes the equivalent diameter that the wheel would be with this gear ratio if the pedals were fixed directly to the wheel</p>
-				<p>MD - Metres of Development (aka <a target="_blank" href="https://en.wikipedia.org/wiki/Gear_inches#Relationship_to_metres_of_development">Relationship to metres of development</a>)  describe the distance travelled for each pedal revolution</p>
-				<p>GI - Gear Inches describes gear ratios in terms of the diameter of an equivalent directly driven wheel</p>
-				<p>Speed/cadence - optionally add a target cadence to see the speed each gear will achieve at that cadence</p>
-				<p>Derailleur capacity - this will tell you what capacity derailleur you should be looking for based upon your crank &amp; cassette. The formula to calculate it is <i>(largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)</i></p>
-				-->
-				<ul>
-					<!--<li><b>ED:</b> Effective Diameter describes the equivalent diameter that the wheel would be with this gear ratio if the pedals were fixed directly to the wheel</li>-->
-					<li><b>Ratio:</b> Metres of Development (<a href="https://en.wikipedia.org/wiki/Gear_inches#Relationship_to_metres_of_development" target="_blank" title="Click here for Wikipedias explanation">wiki</a>)  describes the distance travelled for each pedal revolution</li>
-					<li><b>MD:</b> Metres of Development (<a href="https://en.wikipedia.org/wiki/Gear_inches#Relationship_to_metres_of_development" target="_blank" title="Click here for Wikipedias explanation">wiki</a>)  describes the distance travelled for each pedal revolution</li>
-					<li><b>GI:</b> Gear Inches (<a href="https://en.wikipedia.org/wiki/Gear_inches" target="_blank" title="Click here for Wikipedias explanation">wiki</a>) also known as Effective Diameter, describes gear ratios in terms of the diameter of an equivalent directly driven wheel. The formula to calculate it is <i>(wheel + tyre diameter in inches) &times; (chainring toothcount &divide; sprocket toothcount)</i></li></li>
-					<li><b>GR:</b> Gain Ratio is a Sheldon Brown innovation. Traditional measurements (GI, MD etc.) don't allow for the dis/advantage of pedal arm (crank) length and also make easy comparison of different gearing tricky (46/16 is the same as 53/19 - if the crank lengths are the same) so Sheldon Brown proposed a gear measurement system called <a href="http://sheldonbrown.com/gain.html" target="_blank" title="Click here for Sheldons explanation!">&quot;gain ratio&quot;</a>. It describes the ratio of distance travelled by the bike relative to the radial distance moved of the pedals. His formula is <i>((wheel + tyre radius) &divide; crank length) &times; gear ratio</i>. The benefits of this include:
-						<ol>
-							<li>Given 2 identically geared/wheeled bikes you can see a numerical representation of the mechanical dis/advantage if they have different crank lengths.</li>
-							<li>It's <a href="https://en.wikipedia.org/wiki/Dimensionless_quantity" target="_blank">dimensionless</a>, so whether you supply the measurements in inches, mm or microns the resulting value is the same.</li>
-							<li>It&#39;s like a universal language for comparing gearing, all reduced to a single number!</li>
-						</ol></li>
-					<li><b>Speed/cadence:</b> Optionally add a target cadence to see the speed each gear will achieve at that cadence</li>
-					<li><b>Derailleur capacity:</b> This will tell you what capacity derailleur you should be looking for based upon your crank &amp; cassette. The formula to calculate it is <i>(largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)</i></li>
-				</ul>
-			</div>
-		</div>
 	</body>
 </html>
