@@ -6,7 +6,8 @@ TODO::
 			jQuery(document).ready(function($){
 				var gears = {
 					//debug: <?php echo ($debug ? 'true' : 'false'); ?>,
-					debug: false,
+					debug: true,
+					// debug: (window.location.hash == 'debug' ? true : false),
 					chainringCount: 0,
 					sprocketCount: 0,
 					chainrings: [],
