@@ -5,8 +5,7 @@ TODO::
 */
 			jQuery(document).ready(function($){
 				var gears = {
-					//debug: <?php echo ($debug ? 'true' : 'false'); ?>,
-					debug: true,
+					debug: false,
 					// debug: (window.location.hash == 'debug' ? true : false),
 					chainringCount: 0,
 					sprocketCount: 0,
@@ -18,7 +17,6 @@ TODO::
 					targetCadence: 0,
 					units: 'metric',
 					varDump: function(dumpData, title) {
-						// console.log(this);
 						console.log(title, (dumpData ? JSON.parse(JSON.stringify(this)) : ''));
 					},
 					initialise: function() {
@@ -26,19 +24,11 @@ TODO::
 						this.resetTable();
 						$("#clearAll").click(function(){self.clearAll()});
 						$("input").change(function(){
-							// if (this.name.indexOf('targetCadence') === 0) self.targetCadence = Number(this.value);
-							// else if (this.name.indexOf('chainring') === 0) self.recalculate();
-							// else if (this.name.indexOf('sprocket') === 0) self.recalculate();
-							// else if (this.name.indexOf('unitToggler') === 0) self.recalculate();
 							if (self.debug) self.varDump(false, 'Input changed');
 							self.recalculate();
 						});
 						$("select").change(function(){
 							if (this.name.indexOf('preset') === 0) return self.usePreset(this.value);
-							// if (this.name.indexOf('tyreDiameter') === 0) self.tyreDiameter = Number(this.value);
-							// else if (this.name.indexOf('chainringCount') === 0) self.chainringCount = Number(this.value);
-							// else if (this.name.indexOf('sprocketCount') === 0) self.sprocketCount = Number(this.value);
-							// else if (this.name.indexOf('wheelDiameter') === 0) self.wheelDiameter = Number(this.value);
 							if (self.debug) self.varDump(false, 'Select changed');
 							self.recalculate();
 						});
