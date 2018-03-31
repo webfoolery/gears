@@ -1,0 +1,27 @@
+
+			/*
+			table.resultTable th, table.resultTable td {border:1px solid #777;}
+			table.resultTable label {}
+			table.resultTable input {width:4em;}
+			.unitSwitcher .ui-slider-switch { width: 9em }
+			div.resultBox {text-shadow:none;font-size:0.8em;}
+			*/
+			
+			body {font-family:arial,helvetica,sans-serif;font-size:1em;}
+			input.sprockets, input.chainrings {width:90px;}
+			table.resultTable {border-collapse:collapse;}
+			table.resultTable th, table.resultTable td {text-shadow:none;font-size:.8em;border:1px solid #777;color:#000;}
+			.cadenceInput, .crankLengthInput {width:200px!important;}
+			.chainringInput, .sprocketInput {width:120px!important;}
+			p.noScript {margin:0 auto;width:80%;background-color:red;color:white;font-weight:bold;padding:10px;text-align:center;border-radius:5px;}
+			
+			/*
+			@media only screen and (min-width: 980px){
+				.ui-page, ui-footer {
+					width: 980px !important;
+					margin: 0 auto !important;
+					position: relative !important;
+					border-right: 5px #666 outset !important;
+					border-left: 5px #666 outset !important;
+				}
+			} */
