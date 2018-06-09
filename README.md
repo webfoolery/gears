@@ -3,6 +3,8 @@ Usage: on the calculator page you can enter cassette & chainring sizes, crank le
 
 There are several presets saved with common gear configurations (and a couple of my bikes) which can be useful for a quick starting point. If you want to create more presets just add a new object to the 'presets' variable.
 
+See it in action [here](https://webfoolery.github.io/gears/)
+
 * **Ratio:** Gear Ratio describes the rotations of the output gear in relation to rotations from the input gear. A ratio of 3:1 would mean that the wheel would rotate 3 times for each rotation of the chainring.
 * **MD:** Metres of Development (wiki) describes the distance the bike will travel for each full pedal revolution.
 The formula is (wheel diameter + tyre diameter) × π × gear ratio
