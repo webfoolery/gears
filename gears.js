@@ -38,6 +38,15 @@ TODO::
 						var self = this;
 						this.clearAll();
 						var presets = {
+							csAttain: {
+								chainrings: [50,34], 
+								sprockets: [11,12,13,14,16,18,20,22,25,28,32], 
+								wheelDiameter: 622, 
+								tyreDiameter: 50, 
+								crankLength: 172.5, 
+								targetCadence: 90, 
+								name: 'Cube Attain GTC Race Disc (2018)'
+							},
 							csAgree: {
 								chainrings: [50,34], 
 								sprockets: [11,12,13,14,15,17,19,21,23,25,28], 
@@ -45,7 +54,7 @@ TODO::
 								tyreDiameter: 50, 
 								crankLength: 172.5, 
 								targetCadence: 90, 
-								units: 'imperial'
+								name: 'Cube Agree C:62 Disc (2017)'
 							},
 							csPeloton: {
 								chainrings: [50,39,30], 
@@ -54,7 +63,7 @@ TODO::
 								tyreDiameter: 50, 
 								crankLength: 170, 
 								targetCadence: 90, 
-								units: 'imperial'
+								name: 'Cube Peloton (2011)'
 							},
 							standard09: {
 								chainrings: [53,39], 
@@ -63,7 +72,7 @@ TODO::
 								tyreDiameter: 50, 
 								crankLength: 170, 
 								targetCadence: 90, 
-								units: 'imperial'
+								name: 'Preset 9sp standard'
 							},
 							standard10: {
 								chainrings: [53,39], 
@@ -72,7 +81,7 @@ TODO::
 								tyreDiameter: 50, 
 								crankLength: 170, 
 								targetCadence: 90, 
-								units: 'imperial'
+								name: 'Preset 10sp standard'
 							},
 							standard11: {
 								chainrings: [53,39], 
@@ -81,7 +90,7 @@ TODO::
 								tyreDiameter: 50, 
 								crankLength: 170, 
 								targetCadence: 90, 
-								units: 'imperial'
+								name: 'Preset 11sp standard'
 							},
 							compact09: {
 								chainrings: [50,34], 
@@ -90,7 +99,7 @@ TODO::
 								tyreDiameter: 50, 
 								crankLength: 170, 
 								targetCadence: 90, 
-								units: 'imperial'
+								name: 'Preset 9sp compact'
 							},
 							compact10: {
 								chainrings: [50,34], 
@@ -99,7 +108,7 @@ TODO::
 								tyreDiameter: 50, 
 								crankLength: 170, 
 								targetCadence: 90, 
-								units: 'imperial'
+								name: 'Preset 10sp compact'
 							},
 							compact11: {
 								chainrings: [50,34], 
@@ -108,7 +117,7 @@ TODO::
 								tyreDiameter: 50, 
 								crankLength: 170, 
 								targetCadence: 90, 
-								units: 'imperial'
+								name: 'Preset 11sp compact'
 							},
 							triple09: {
 								chainrings: [50,39,30], 
@@ -117,7 +126,7 @@ TODO::
 								tyreDiameter: 50, 
 								crankLength: 170, 
 								targetCadence: 90, 
-								units: 'imperial'
+								name: 'Preset 9sp triple'
 							}
 						};
 						// $.each(presets[selectedPreset], function(index, value){
