@@ -125,7 +125,7 @@
 						for (var key in self.presets) {
 							// console.log('Key:'+key+' = Val: '+self.presets[key]);
 							if (labels.indexOf(self.presets[key].label) == -1) {
-								var newLabel = document.createElement('OPTGROUP')
+								var newLabel = document.createElement('OPTGROUP');
 								newLabel.label = self.presets[key].label;
 								presetSelector.appendChild(newLabel);
 								labels.push(self.presets[key].label);
