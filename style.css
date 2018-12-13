@@ -8,7 +8,7 @@
 			*/
 			
 			body {font-family:arial,helvetica,sans-serif;font-size:1em;}
-			input.sprockets, input.chainrings {width:90px;}
+			/*input.sprockets, input.chainrings {width:90px;}*/
 			table.resultTable {border-collapse:collapse;}
 			table.resultTable th, table.resultTable td {text-shadow:none;font-size:.8em;border:1px solid #777;color:#000;}
 			.cadenceInput, .crankLengthInput {width:200px!important;}
