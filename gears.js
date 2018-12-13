@@ -16,11 +16,127 @@ TODO::
 					crankLength: 0,
 					targetCadence: 0,
 					units: 'metric',
+					presets: {
+						standard09: {
+							label: 'Standard chainset (53,39)', 
+							chainrings: [53,39], 
+							sprockets: [12,13,14,15,17,19,21,23,25], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 170, 
+							targetCadence: 90, 
+							name: '9sp standard'
+						},
+						standard10: {
+							label: 'Standard chainset (53,39)', 
+							chainrings: [53,39], 
+							sprockets: [12,13,14,15,16,17,19,21,23,25], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 170, 
+							targetCadence: 90, 
+							name: '10sp standard'
+						},
+						standard11: {
+							label: 'Standard chainset (53,39)', 
+							chainrings: [53,39], 
+							sprockets: [11,12,13,14,15,17,19,21,23,25,28], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 170, 
+							targetCadence: 90, 
+							name: '11sp standard'
+						},
+						compact09: {
+							label: 'Compact chainset (50,34)', 
+							chainrings: [50,34], 
+							sprockets: [12,13,14,15,17,19,21,23,25], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 170, 
+							targetCadence: 90, 
+							name: '9sp compact'
+						},
+						compact10: {
+							label: 'Compact chainset (50,34)', 
+							chainrings: [50,34], 
+							sprockets: [12,13,14,15,16,17,19,21,23,25], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 170, 
+							targetCadence: 90, 
+							name: '10sp compact'
+						},
+						compact11: {
+							label: 'Compact chainset (50,34)', 
+							chainrings: [50,34], 
+							sprockets: [11,12,13,14,15,17,19,21,23,25,28], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 170, 
+							targetCadence: 90, 
+							name: '11sp compact'
+						},
+						triple09: {
+							label: 'Triple chainset (50,39,30)', 
+							chainrings: [50,39,30], 
+							sprockets: [12,13,14,15,17,19,21,23,25], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 170, 
+							targetCadence: 90, 
+							name: '9sp triple'
+						}, 
+						csAttain: {
+							label: 'Specific bikes', 
+							chainrings: [50,34], 
+							sprockets: [11,12,13,14,16,18,20,22,25,28,32], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 172.5, 
+							targetCadence: 90, 
+							name: 'Cube Attain GTC Race Disc (2018)'
+						},
+						csAgree: {
+							label: 'Specific bikes', 
+							chainrings: [50,34], 
+							sprockets: [11,12,13,14,15,17,19,21,23,25,28], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 172.5, 
+							targetCadence: 90, 
+							name: 'Cube Agree C:62 Disc (2017)'
+						},
+						csPeloton: {
+							label: 'Specific bikes', 
+							chainrings: [50,39,30], 
+							sprockets: [11,12,14,15,17,19,21,24,27], 
+							wheelDiameter: 622, 
+							tyreDiameter: 50, 
+							crankLength: 170, 
+							targetCadence: 90, 
+							name: 'Cube Peloton (2011)'
+						},
+					}, 
 					varDump: function(dumpData, title) {
 						console.log(title, (dumpData ? JSON.parse(JSON.stringify(this)) : ''));
 					},
 					initialise: function() {
 						var self = this;
+						// console.log(self.presets.length);
+						// SET UP THE PRESET LIST
+						var presetSelector = document.getElementsByName('presets')[0];
+						var labels = [];
+						for (var key in self.presets) {
+							// console.log('Key:'+key+' = Val: '+self.presets[key]);
+							if (labels.indexOf(self.presets[key].label) == -1) {
+								var newLabel = document.createElement('OPTGROUP')
+								newLabel.label = self.presets[key].label;
+								presetSelector.appendChild(newLabel);
+								labels.push(self.presets[key].label);
+							}
+							presetSelector.add(new Option(self.presets[key].name, key));
+						}
 						this.resetTable();
 						$("#clearAll").click(function(){self.clearAll()});
 						$("input").change(function(){
@@ -37,109 +153,12 @@ TODO::
 						if (!selectedPreset) selectedPreset = 'csPeloton';
 						var self = this;
 						this.clearAll();
-						var presets = {
-							csAttain: {
-								chainrings: [50,34], 
-								sprockets: [11,12,13,14,16,18,20,22,25,28,32], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 172.5, 
-								targetCadence: 90, 
-								name: 'Cube Attain GTC Race Disc (2018)'
-							},
-							csAgree: {
-								chainrings: [50,34], 
-								sprockets: [11,12,13,14,15,17,19,21,23,25,28], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 172.5, 
-								targetCadence: 90, 
-								name: 'Cube Agree C:62 Disc (2017)'
-							},
-							csPeloton: {
-								chainrings: [50,39,30], 
-								sprockets: [11,12,14,15,17,19,21,24,27], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 170, 
-								targetCadence: 90, 
-								name: 'Cube Peloton (2011)'
-							},
-							standard09: {
-								chainrings: [53,39], 
-								sprockets: [12,13,14,15,17,19,21,23,25], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 170, 
-								targetCadence: 90, 
-								name: 'Preset 9sp standard'
-							},
-							standard10: {
-								chainrings: [53,39], 
-								sprockets: [12,13,14,15,16,17,19,21,23,25], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 170, 
-								targetCadence: 90, 
-								name: 'Preset 10sp standard'
-							},
-							standard11: {
-								chainrings: [53,39], 
-								sprockets: [11,12,13,14,15,17,19,21,23,25,28], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 170, 
-								targetCadence: 90, 
-								name: 'Preset 11sp standard'
-							},
-							compact09: {
-								chainrings: [50,34], 
-								sprockets: [12,13,14,15,17,19,21,23,25], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 170, 
-								targetCadence: 90, 
-								name: 'Preset 9sp compact'
-							},
-							compact10: {
-								chainrings: [50,34], 
-								sprockets: [12,13,14,15,16,17,19,21,23,25], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 170, 
-								targetCadence: 90, 
-								name: 'Preset 10sp compact'
-							},
-							compact11: {
-								chainrings: [50,34], 
-								sprockets: [11,12,13,14,15,17,19,21,23,25,28], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 170, 
-								targetCadence: 90, 
-								name: 'Preset 11sp compact'
-							},
-							triple09: {
-								chainrings: [50,39,30], 
-								sprockets: [12,13,14,15,17,19,21,23,25], 
-								wheelDiameter: 622, 
-								tyreDiameter: 50, 
-								crankLength: 170, 
-								targetCadence: 90, 
-								name: 'Preset 9sp triple'
-							}
-						};
-						// $.each(presets[selectedPreset], function(index, value){
-							// self[index] = value;
-							// console.log(index,value);
-							// $('[name='+index+']').val(value);
-						// });
-						$('[name=wheelDiameter]').val(presets[selectedPreset]['wheelDiameter']).selectmenu("refresh", true);
-						$('[name=tyreDiameter]').val(presets[selectedPreset]['tyreDiameter']).selectmenu("refresh", true);
-						$('[name=targetCadence]').val(presets[selectedPreset]['targetCadence']);
-						$('[name=crankLength]').val(presets[selectedPreset]['crankLength']);
-						for (var c = 1; c <= presets[selectedPreset]['chainrings'].length; c++) $('[name=chainring'+c+']').val(presets[selectedPreset]['chainrings'][c-1]);
-						for (var s = 1; s <= presets[selectedPreset]['sprockets'].length; s++) $('[name=sprocket'+s+']').val(presets[selectedPreset]['sprockets'][s-1]);
+						$('[name=wheelDiameter]').val(self.presets[selectedPreset]['wheelDiameter']).selectmenu("refresh", true);
+						$('[name=tyreDiameter]').val(self.presets[selectedPreset]['tyreDiameter']).selectmenu("refresh", true);
+						$('[name=targetCadence]').val(self.presets[selectedPreset]['targetCadence']);
+						$('[name=crankLength]').val(self.presets[selectedPreset]['crankLength']);
+						for (var c = 1; c <= self.presets[selectedPreset]['chainrings'].length; c++) $('[name=chainring'+c+']').val(self.presets[selectedPreset]['chainrings'][c-1]);
+						for (var s = 1; s <= self.presets[selectedPreset]['sprockets'].length; s++) $('[name=sprocket'+s+']').val(self.presets[selectedPreset]['sprockets'][s-1]);
 						this.recalculate();
 					},
 					recalculate: function() {
