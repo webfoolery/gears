@@ -19,3 +19,12 @@ It's like a universal language for comparing gearing, all reduced to a single nu
 The formula is km/h = ((wheel diameter(mm) + tyre diameter(mm)) × π) × ratio × cadence × 60 / 100,000
 * **Derailleur capacity:** This will tell you what capacity derailleur you should be looking for based upon your crank & cassette.
 The formula to calculate it is (largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)
+
+## Changelog
+**2018-12-13**
+removed HTML for the preset selector and modified Javascript to populate the <options> from the preset object
+**2018-12-11**
+updated & added some bike names
+**2018-03-31**
+Removes dependancy on PHP, how operates solely as HTML, JS & CSS
+Removes text shadow on results table as it makes it difficult to read in some circumstances
