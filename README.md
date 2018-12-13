@@ -22,9 +22,9 @@ The formula to calculate it is (largest sprocket - smallest sprocket) + (largest
 
 ## Changelog
 **2018-12-13**  
-removed HTML for the preset selector and modified Javascript to populate the <options> from the preset object 
+removed HTML for the preset selector and modified Javascript to populate the <options> from the preset object  
 **2018-12-11**  
-updated & added some bike names 
+updated & added some bike names  
 **2018-03-31**  
-Removes dependancy on PHP, how operates solely as HTML, JS & CSS 
-Removes text shadow on results table as it makes it difficult to read in some circumstances
+Removes dependancy on PHP, how operates solely as HTML, JS & CSS  
+Removes text shadow on results table as it makes it difficult to read in some circumstances  
