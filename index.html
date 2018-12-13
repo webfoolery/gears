@@ -45,14 +45,14 @@ JQUERY MOBILE
 					<li><b>Speed/cadence:</b> Optionally add a target cadence to see the speed each gear will achieve at that cadence.<br />The formula is <i>km/h = ((wheel diameter(mm) + tyre diameter(mm)) &times; &pi;) &times; ratio &times; cadence &times; 60 / 100,000</i></li>
 					<li><b>Derailleur capacity:</b> This will tell you what capacity derailleur you should be looking for based upon your crank &amp; cassette.<br />The formula to calculate it is <i>(largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)</i></li>
 				</ul>
-				<a href="#resultPage" class="ui-btn ui-btn-inline ui-icon-grid ui-btn-icon-left ui-mini ui-shadow">Go to calculator</a>
+				<a href="#resultPage" data-transition="slidefade" class="ui-btn ui-btn-inline ui-icon-grid ui-btn-icon-left ui-mini ui-shadow">Go to calculator</a>
 			</div>
 		</div>
 		
 		
 		<div data-role="page" id="resultPage">
 			<div data-role="main" class="ui-content">
-				<a href="#infoPage" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-left ui-mini ui-shadow">Home/Info</a>
+				<a href="./" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-left ui-mini ui-shadow" data-rel="back">Home/Info</a>
 				<button class="ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="clearAll">Clear data</button>
 					<select name="presets" data-icon="gear" data-inline="true" data-mini="true">
 						<option>Load a preset</option>
