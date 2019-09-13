@@ -21,6 +21,8 @@ The formula is km/h = ((wheel diameter(mm) + tyre diameter(mm)) × π) × ratio 
 The formula to calculate it is (largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)
 
 ## Changelog
+**2019-09-13**  
+Adds (i) info icons to the form labels  
 **2018-12-13**  
 Removes HTML for the preset selector and modified Javascript to populate the <options> from the preset object  
 **2018-12-11**  
