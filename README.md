@@ -21,12 +21,21 @@ The formula is km/h = ((wheel diameter(mm) + tyre diameter(mm)) × π) × ratio 
 The formula to calculate it is (largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)
 
 ## Changelog
-**2019-09-13**  
-Adds (i) info icons to the form labels  
-**2018-12-13**  
-Removes HTML for the preset selector and modified Javascript to populate the <options> from the preset object  
-**2018-12-11**  
-Updates & adds some bike names  
-**2018-03-31**  
-Removes dependancy on PHP, how operates solely as HTML, JS & CSS  
-Removes text shadow on results table as it makes it difficult to read in some circumstances  
+**2021-06-29**  
+ - Removes JQuery & JQuery Mobile styling & Javascript
+ - All javascript is now vanilla, some ES6
+ - Adds ordering option to the results, ordering by gear ratio ascending or descending
+ - Adds a list showing gear ratios in linear order and highlights those that are close together
+
+ **2019-09-13**  
+ - Adds (i) info icons to the form labels 
+
+ **2018-12-13**  
+ - Removes HTML for the preset selector and modified Javascript to populate the <options> from the preset object 
+
+ **2018-12-11**  
+ - Updates & adds some bike names 
+  
+ **2018-03-31**  
+ - Removes dependancy on PHP, how operates solely as HTML, JS & CSS  
+ - Removes text shadow on results table as it makes it difficult to read in some circumstances  

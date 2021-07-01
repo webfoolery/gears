@@ -1,86 +1,110 @@
 <!DOCTYPE html>
-<html lang="en-UK">
-	<head>
-<!--
-REFERENCES:
-TYRE SIZES
-	http://www.ctc.org.uk/cyclists-library/components/wheels-tyres/tyre-sizes
-SIMILAR TOOL
-	http://www.bikecalc.com/gear_ratios
-	http://www.whycycle.co.uk/bike-gear-calculator
-JQUERY MOBILE
-	http://www.w3schools.com/jquerymobile/
-	http://demos.jquerymobile.com/1.4.5/forms/
--->
-		<meta charset="UTF-8">
-		<title>Gear ratio calculator</title>
-		<link rel="stylesheet" type="text/css" href="style.css" />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
-		<script src="gears.js" type="text/javascript"></script>
-	</head>
+<html lang="en">
 
-	<body>
-		<noscript>
+<head>
+    <!--
+		REFERENCES:
+		TYRE SIZES
+			http://www.ctc.org.uk/cyclists-library/components/wheels-tyres/tyre-sizes
+		SIMILAR TOOL
+			http://www.bikecalc.com/gear_ratios
+			http://www.whycycle.co.uk/bike-gear-calculator
+		JQUERY MOBILE
+			http://www.w3schools.com/jquerymobile/
+			http://demos.jquerymobile.com/1.4.5/forms/
+		-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gear ratio calculator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/css/uikit.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit-icons.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="gears.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <noscript>
 			<p class="noScript">You appear not to have Javascript enabled so this tool will not work for you!</p>
 		</noscript>
-		
-		<div data-role="page" id="infoPage">
-			<div data-role="main" class="ui-content">
-				<h1>Bike Gearing Calculator</h1>
-				<p><b>Usage:</b> on the calculator page you can enter cassette &amp; chainring sizes, crank length, tyre &amp; wheel diameter etc. Based upon the info you enter you will be able to see the results described below.</p>
-				<p>There are several presets saved with common gear configurations (and a couple of my bikes) which can be useful for a quick starting point. If you want me to store your bike data as a preset send me the figures.</p>
-				<ul>
-					<li><b>Ratio:</b> Gear Ratio describes the rotations of the output gear in relation to rotations from the input gear. A ratio of 3:1 would mean that the wheel would rotate 3 times for each rotation of the chainring.</li>
-					<li><b>MD:</b> Metres of Development (<a href="https://en.wikipedia.org/wiki/Gear_inches#Relationship_to_metres_of_development" target="_blank" title="Click here for Wikipedias explanation">wiki</a>)  describes the distance the bike will travel for each full pedal revolution.<br />The formula is <i>(wheel diameter + tyre diameter) &times; &pi; &times; gear ratio</i></li>
-					<li><b>GI:</b> Gear Inches (<a href="https://en.wikipedia.org/wiki/Gear_inches" target="_blank" title="Click here for Wikipedias explanation">wiki</a>) also known as Effective Diameter, describes gear ratios in terms of the diameter of an equivalent directly driven wheel if the pedals were fixed to that wheel (like a Penny Farthing).<br />The formula to calculate it is <i>(wheel + tyre diameter in inches) &times; (chainring toothcount &divide; sprocket toothcount)</i></li></li>
-					<li><b>GR:</b> Gain Ratio is a Sheldon Brown innovation. Traditional measurements (GI, MD etc.) don't allow for the dis/advantage of pedal arm (crank) length and also make easy comparison of different gearing tricky (46/16 is the same as 53/19 - if the crank lengths are the same) so Sheldon Brown proposed a gear measurement system called <a href="http://sheldonbrown.com/gain.html" target="_blank" title="Click here for Sheldons explanation!">&quot;gain ratio&quot;</a>. It describes the ratio of distance travelled by the bike relative to the radial distance moved of the pedals.<br />His formula is <i>((wheel + tyre radius) &divide; crank length) &times; gear ratio</i>. The benefits of this include:
-						<ol>
-							<li>Given 2 identically geared/wheeled bikes you can see a numerical representation of the mechanical dis/advantage if they have different crank lengths.</li>
-							<li>It's <a href="https://en.wikipedia.org/wiki/Dimensionless_quantity" target="_blank">dimensionless</a>, so whether you supply the measurements in inches, mm or microns the resulting value is the same.</li>
-							<li>It&#39;s like a universal language for comparing gearing, all reduced to a single number!</li>
-						</ol></li>
-					<li><b>Speed/cadence:</b> Optionally add a target cadence to see the speed each gear will achieve at that cadence.<br />The formula is <i>km/h = ((wheel diameter(mm) + tyre diameter(mm)) &times; &pi;) &times; ratio &times; cadence &times; 60 / 100,000</i></li>
-					<li><b>Derailleur capacity:</b> This will tell you what capacity derailleur you should be looking for based upon your crank &amp; cassette.<br />The formula to calculate it is <i>(largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)</i></li>
-				</ul>
-				<a href="#resultPage" data-transition="slidefade" class="ui-btn ui-btn-inline ui-icon-grid ui-btn-icon-left ui-mini ui-shadow">Go to calculator</a>
-			</div>
-		</div>
-		
-		
-		<div data-role="page" id="resultPage">
-			<div data-role="main" class="ui-content">
-				<a href="./" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-left ui-mini ui-shadow" data-rel="back">Home/Info</a>
-				<button class="ui-btn ui-btn-inline ui-btn-icon-left ui-mini ui-shadow" type="button" id="clearAll">Clear data</button>
-					<select name="presets" data-icon="gear" data-inline="true" data-mini="true">
+    <div class="uk-container">
+        <!-- <nav class="uk-navbar-container" uk-navbar>
+            <div class="uk-navbar-left">
+                <ul class="uk-navbar-nav">
+                    <li class="uk-active">
+                        <a href="./">Home</a>
+                    </li>
+                    <li>
+                        <a href="">Info</a>
+                    </li>
+                </ul>
+            </div>
+        </nav> -->
+
+
+        <h1 class="uk-text-center">Bike Gearing Calculator</h1>
+        <ul uk-accordion>
+            <li>
+                <a class="uk-accordion-title" href="#">Info/About</a>
+                <div class="uk-accordion-content">
+                    <p><b>Usage:</b> on the calculator page you can enter cassette &amp; chainring sizes, crank length, tyre &amp; wheel diameter etc. Based upon the info you enter you will be able to see the results described below.</p>
+                    <p>There are several presets saved with common gear configurations which can be useful for a quick starting point.</p>
+                    <ul>
+                        <li><b>Ratio:</b> Gear Ratio describes the rotations of the output gear in relation to rotations from the input gear. A ratio of 3:1 would mean that the wheel would rotate 3 times for each rotation of the chainring.</li>
+                        <li><b>MD:</b> Metres of Development (<a href="https://en.wikipedia.org/wiki/Gear_inches#Relationship_to_metres_of_development" target="_blank" title="Click here for Wikipedias explanation">wiki</a>) describes the distance the bike
+                            will travel for each full pedal revolution.<br />The formula is <i>(wheel diameter + tyre diameter) &times; &pi; &times; gear ratio</i></li>
+                        <li><b>GI:</b> Gear Inches (<a href="https://en.wikipedia.org/wiki/Gear_inches" target="_blank" title="Click here for Wikipedias explanation">wiki</a>) also known as Effective Diameter, describes gear ratios in terms of the diameter
+                            of an equivalent directly driven wheel if the pedals were fixed to that wheel (like a Penny Farthing).<br />The formula to calculate it is <i>(wheel + tyre diameter in inches) &times; (chainring toothcount &divide; sprocket toothcount)</i></li>
+            </li>
+            <li><b>GR:</b> Gain Ratio is a <a href="https://en.wikipedia.org/wiki/Sheldon_Brown_(bicycle_mechanic)" target="_blank">Sheldon Brown</a> innovation. Traditional measurements (GI, MD etc.) don't allow for the dis/advantage of pedal arm (crank)
+                length and also make easy comparison of different gearing tricky (46/16 is the same as 53/19 - if the crank lengths are the same) so Sheldon Brown proposed a gear measurement system called <a href="http://sheldonbrown.com/gain.html" target="_blank"
+                    title="Click here for Sheldons explanation!">&quot;gain ratio&quot;</a>. It describes the ratio of distance travelled by the bike relative to the radial distance moved of the pedals.<br />His formula is <i>((wheel + tyre radius) &divide; crank length) &times; gear ratio</i>.
+                The benefits of this include:
+                <ol>
+                    <li>Given 2 identically geared/wheeled bikes you can see a numerical representation of the mechanical dis/advantage if they have different crank lengths.</li>
+                    <li>It's <a href="https://en.wikipedia.org/wiki/Dimensionless_quantity" target="_blank">dimensionless</a>, so whether you supply the measurements in inches, mm or microns the resulting value is the same.</li>
+                    <li>It&#39;s like a universal language for comparing gearing, all reduced to a single number!</li>
+                </ol>
+            </li>
+            <li><b>Speed/cadence:</b> Optionally add a target cadence to see the speed each gear will achieve at that cadence.<br />The formula is <i>km/h = ((wheel diameter(mm) + tyre diameter(mm)) &times; &pi;) &times; ratio &times; cadence &times; 60 &divide; 100,000</i></li>
+            <li><b>Derailleur capacity:</b> This will tell you what capacity derailleur you should be looking for based upon your crank &amp; cassette.<br />The formula to calculate it is <i>(largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)</i></li>
+            </ul>
+            </div>
+            </li>
+        </ul>
+
+
+        <form class="uk-form-stacked">
+            <div class="uk-grid-small uk-child-width-expand@s" uk-grid>
+                <div>
+                    <select name="presets" class="uk-select">
 						<option>Load a preset</option>
 					</select>
-				
-				<div data-role="fieldcontain">
-					<label for="chainring1" title="Chainring &amp; sprocket data is required! Add 1-3 rings and 1-11 sprockets">Chainrings<span class="infoBubble"></span>:</label>
-					<input data-wrapper-class="chainringInput" class="chainrings" placeholder="Chainring 1" type="number" name="chainring1" id="chainring1" />
-					<input data-wrapper-class="chainringInput" class="chainrings" placeholder="Chainring 2" type="number" name="chainring2" id="chainring2" />
-					<input data-wrapper-class="chainringInput" class="chainrings" placeholder="Chainring 3" type="number" name="chainring3" id="chainring3" />
-				</div>
-				<div data-role="fieldcontain">
-					<label for="sprocket1" title="Chainring &amp; sprocket data is required! Add 1-3 rings and 1-11 sprockets">Sprockets<span class="infoBubble"></span>:</label>
-					<input data-wrapper-class="sprocketInput" placeholder="Sprocket 1" class="sprockets sprocket1" name="sprocket1" type="number" id="sprocket1" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 2" class="sprockets sprocket2" name="sprocket2" type="number" id="sprocket2" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 3" class="sprockets sprocket3" name="sprocket3" type="number" id="sprocket3" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 4" class="sprockets sprocket4" name="sprocket4" type="number" id="sprocket4" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 5" class="sprockets sprocket5" name="sprocket5" type="number" id="sprocket5" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 6" class="sprockets sprocket6" name="sprocket6" type="number" id="sprocket6" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 7" class="sprockets sprocket7" name="sprocket7" type="number" id="sprocket7" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 8" class="sprockets sprocket8" name="sprocket8" type="number" id="sprocket8" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 9" class="sprockets sprocket9" name="sprocket9" type="number" id="sprocket9" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 10" class="sprockets sprocket10" name="sprocket10" type="number" id="sprocket10" />
-                    <input data-wrapper-class="sprocketInput" placeholder="Sprocket 11" class="sprockets sprocket11" name="sprocket11" type="number" id="sprocket11" />
-				</div>
-				<div data-role="fieldcontain">
-					<label for="wheelDiameter" title="If you add your wheel &amp; tyre diameter your results will include more data such as Metres Development (MD) &amp; Gear Inches (GI)">Wheel Diameter (mm)<span class="infoBubble"></span>:</label>
-					<select name="wheelDiameter" id="wheelDiameter" data-inline="true">
+
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="chainring1" title="Chainring &amp; sprocket data is required! Add 1-3 rings and 1-11 sprockets">Chainrings:</label>
+                        <input class="uk-input uk-form-width-small chainrings" placeholder="Chainring 1" type="number" name="chainring1" id="chainring1" />
+                        <input class="uk-input uk-form-width-small chainrings" placeholder="Chainring 2" type="number" name="chainring2" id="chainring2" />
+                        <input class="uk-input uk-form-width-small chainrings" placeholder="Chainring 3" type="number" name="chainring3" id="chainring3" />
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="sprocket1" title="Chainring &amp; sprocket data is required! Add 1-3 rings and 1-11 sprockets">Sprockets:</label>
+                        <input placeholder="Sprocket 1" class="uk-input uk-form-width-small sprockets sprocket1" name="sprocket1" type="number" id="sprocket1" />
+                        <input placeholder="Sprocket 2" class="uk-input uk-form-width-small sprockets sprocket2" name="sprocket2" type="number" id="sprocket2" />
+                        <input placeholder="Sprocket 3" class="uk-input uk-form-width-small sprockets sprocket3" name="sprocket3" type="number" id="sprocket3" />
+                        <input placeholder="Sprocket 4" class="uk-input uk-form-width-small sprockets sprocket4" name="sprocket4" type="number" id="sprocket4" />
+                        <input placeholder="Sprocket 5" class="uk-input uk-form-width-small sprockets sprocket5" name="sprocket5" type="number" id="sprocket5" />
+                        <input placeholder="Sprocket 6" class="uk-input uk-form-width-small sprockets sprocket6" name="sprocket6" type="number" id="sprocket6" />
+                        <input placeholder="Sprocket 7" class="uk-input uk-form-width-small sprockets sprocket7" name="sprocket7" type="number" id="sprocket7" />
+                        <input placeholder="Sprocket 8" class="uk-input uk-form-width-small sprockets sprocket8" name="sprocket8" type="number" id="sprocket8" />
+                        <input placeholder="Sprocket 9" class="uk-input uk-form-width-small sprockets sprocket9" name="sprocket9" type="number" id="sprocket9" />
+                        <input placeholder="Sprocket 10" class="uk-input uk-form-width-small sprockets sprocket10" name="sprocket10" type="number" id="sprocket10" />
+                        <input placeholder="Sprocket 11" class="uk-input uk-form-width-small sprockets sprocket11" name="sprocket11" type="number" id="sprocket11" />
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="wheelDiameter" title="If you add your wheel &amp; tyre diameter your results will include more data such as Metres Development (MD) &amp; Gear Inches (GI)">Wheel Diameter (mm):</label>
+                        <select name="wheelDiameter" id="wheelDiameter" class="uk-select uk-form-width-medium">
 						<option value="0">Select wheel size</option>
 						<option value="630">27inch (630mm)</option>
 						<option value="622">700c/29er (622mm)</option>
@@ -94,206 +118,222 @@ JQUERY MOBILE
 						<option value="419">20inch (419mm-Schwinn)</option>
 						<option value="406">20inch (406mm-Recumbent)</option>
 					</select>
-				</div>
-				<div data-role="fieldcontain">
-					<label for="tyreDiameter" title="If you add your wheel &amp; tyre diameter your results will include more data such as Metres Development (MD) &amp; Gear Inches (GI)">Tyre Diameter (mm)<span class="infoBubble"></span>:</label>
-					<select name="tyreDiameter" id="tyreDiameter" data-inline="true">
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="tyreDiameter" title="If you add your wheel &amp; tyre diameter your results will include more data such as Metres Development (MD) &amp; Gear Inches (GI)">Tyre Diameter (mm):</label>
+                        <select name="tyreDiameter" id="tyreDiameter" class="uk-select uk-form-width-medium">
 						<option value="0">Select tyre diameter</option>
 						<option value="36">18c</option>
-                        <option value="46">23c</option>
-                        <option value="50">25c</option>
-                        <option value="56">28c</option>
-                        <option value="64">32c</option>
-                        <option value="70">35c</option>
-                        <option value="94">47c</option>
+            <option value="46">23c</option>
+            <option value="50">25c</option>
+            <option value="56">28c</option>
+            <option value="64">32c</option>
+            <option value="70">35c</option>
+            <option value="94">47c</option>
 					</select>
-				</div>
-				<div data-role="fieldcontain">
-					<label for="crankLength" title="This value can drastically alter the way 2 identically geared bikes feel to pedal. See the info page for a more detailed explanation...">Crank length (mm)<span class="infoBubble"></span>:</label>
-					<input data-inline="true" data-wrapper-class="crankLengthInput" name="crankLength" id="crankLength" placeholder="Crank length (mm)" type="number" />
-				</div>
-				<div data-role="fieldcontain">
-					<label for="targetCadence" title="If you enter a cadence value here your results will include the speed at this cadence for each of your gear combinations.">Target cadence (rpm)<span class="infoBubble"></span>:</label>
-					<input data-inline="true" data-wrapper-class="cadenceInput" name="targetCadence" id="targetCadence" placeholder="Target cadence (rpm)" type="number" />
-				</div>
-				
-				
-				<div data-role="fieldcontain">
-					<label for="orientationToggler" title="You can display the results in a landscape or portait result table">Orientation<span class="infoBubble"></span>:</label>
-					<fieldset data-role="controlgroup" data-type="horizontal">
-						<input type="radio" name="orientationToggler" id="portrait" value="portrait" checked="checked">
-						<label for="portrait">Portrait</label>
-						<input type="radio" name="orientationToggler" id="landscape" value="landscape">
-						<label for="landscape">Landscape</label>
-					</fieldset>
-				</div>
-				
-				<div data-role="fieldcontain">
-					<label for="unitToggler" title="You can select metric or imperial units for the results. This includes recalculating gear INCHES or METRES development into your chosen units, which might seem odd but actually makes sense!">Units<span class="infoBubble"></span>:</label>
-					<fieldset data-role="controlgroup" data-type="horizontal">
-						<input type="radio" name="unitToggler" id="metric" value="metric" checked="checked">
-						<label for="metric">Metric</label>
-						<input type="radio" name="unitToggler" id="imperial" value="imperial">
-						<label for="imperial">Imperial</label>
-					</fieldset>
-				</div>
-				
-				<div data-role="fieldcontain">
-					<label for="colourToggler" title="The results table is colour coded by default showing how relatively hard (red) or easy (green) each of the gears is to pedal in. On some displays the colouring makes the text tricky to read so you can toggle the colouring here.">Colours<span class="infoBubble"></span>:</label>
-					<fieldset data-role="controlgroup" data-type="horizontal">
-						<input type="radio" name="colourToggler" id="colourOn" value="1" checked="checked">
-						<label for="colourOn">Coloured</label>
-						<input type="radio" name="colourToggler" id="colourOff" value="0">
-						<label for="colourOff">Plain</label>
-					</fieldset>
-				</div>
-				
-				<p id="derailleurCapacity"></p>
-				
-				<table class="resultTable portrait">
-					<thead>
-						<tr>
-							<th></th>
-							<th class="chainringHeading chainring1">Chainring 1</th>
-							<th class="chainringHeading chainring2">Chainring 2</th>
-							<th class="chainringHeading chainring3">Chainring 3</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th class="sprocketHeading sprocket1">Sprocket 1</th>
-							<td class="result chainring1sprocket1">chainring1sprocket1</td>
-							<td class="result chainring2sprocket1">chainring2sprocket1</td>
-							<td class="result chainring3sprocket1">chainring3sprocket1</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket2">Sprocket 2</th>
-							<td class="result chainring1sprocket2">chainring1sprocket2</td>
-							<td class="result chainring2sprocket2">chainring2sprocket2</td>
-							<td class="result chainring3sprocket2">chainring3sprocket2</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket3">Sprocket 3</th>
-							<td class="result chainring1sprocket3">chainring1sprocket3</td>
-							<td class="result chainring2sprocket3">chainring2sprocket3</td>
-							<td class="result chainring3sprocket3">chainring3sprocket3</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket4">Sprocket 4</th>
-							<td class="result chainring1sprocket4">chainring1sprocket4</td>
-							<td class="result chainring2sprocket4">chainring2sprocket4</td>
-							<td class="result chainring3sprocket4">chainring3sprocket4</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket5">Sprocket 5</th>
-							<td class="result chainring1sprocket5">chainring1sprocket5</td>
-							<td class="result chainring2sprocket5">chainring2sprocket5</td>
-							<td class="result chainring3sprocket5">chainring3sprocket5</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket6">Sprocket 6</th>
-							<td class="result chainring1sprocket6">chainring1sprocket6</td>
-							<td class="result chainring2sprocket6">chainring2sprocket6</td>
-							<td class="result chainring3sprocket6">chainring3sprocket6</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket7">Sprocket 7</th>
-							<td class="result chainring1sprocket7">chainring1sprocket7</td>
-							<td class="result chainring2sprocket7">chainring2sprocket7</td>
-							<td class="result chainring3sprocket7">chainring3sprocket7</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket8">Sprocket 8</th>
-							<td class="result chainring1sprocket8">chainring1sprocket8</td>
-							<td class="result chainring2sprocket8">chainring2sprocket8</td>
-							<td class="result chainring3sprocket8">chainring3sprocket8</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket9">Sprocket 9</th>
-							<td class="result chainring1sprocket9">chainring1sprocket9</td>
-							<td class="result chainring2sprocket9">chainring2sprocket9</td>
-							<td class="result chainring3sprocket9">chainring3sprocket9</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket10">Sprocket 10</th>
-							<td class="result chainring1sprocket10">chainring1sprocket10</td>
-							<td class="result chainring2sprocket10">chainring2sprocket10</td>
-							<td class="result chainring3sprocket10">chainring3sprocket10</td>
-						</tr>
-						<tr>
-							<th class="sprocketHeading sprocket11">Sprocket 11</th>
-							<td class="result chainring1sprocket11">chainring1sprocket11</td>
-							<td class="result chainring2sprocket11">chainring2sprocket11</td>
-							<td class="result chainring3sprocket11">chainring3sprocket11</td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="resultTable landscape">
-					<thead>
-						<tr>
-							<th></th>
-							<th class="sprocketHeading sprocket1">Sprocket 1</th>
-							<th class="sprocketHeading sprocket2">Sprocket 2</th>
-							<th class="sprocketHeading sprocket3">Sprocket 3</th>
-							<th class="sprocketHeading sprocket4">Sprocket 4</th>
-							<th class="sprocketHeading sprocket5">Sprocket 5</th>
-							<th class="sprocketHeading sprocket6">Sprocket 6</th>
-							<th class="sprocketHeading sprocket7">Sprocket 7</th>
-							<th class="sprocketHeading sprocket8">Sprocket 8</th>
-							<th class="sprocketHeading sprocket9">Sprocket 9</th>
-							<th class="sprocketHeading sprocket10">Sprocket 10</th>
-							<th class="sprocketHeading sprocket11">Sprocket 11</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th class="chainringHeading chainring1">Chainring 1</th>
-							<td class="result chainring1sprocket1">chainring1sprocket1</td>
-							<td class="result chainring1sprocket2">chainring1sprocket2</td>
-							<td class="result chainring1sprocket3">chainring1sprocket3</td>
-							<td class="result chainring1sprocket4">chainring1sprocket4</td>
-							<td class="result chainring1sprocket5">chainring1sprocket5</td>
-							<td class="result chainring1sprocket6">chainring1sprocket6</td>
-							<td class="result chainring1sprocket7">chainring1sprocket7</td>
-							<td class="result chainring1sprocket8">chainring1sprocket8</td>
-							<td class="result chainring1sprocket9">chainring1sprocket9</td>
-							<td class="result chainring1sprocket10">chainring1sprocket10</td>
-							<td class="result chainring1sprocket11">chainring1sprocket11</td>
-						</tr>
-						<tr>
-							<th class="chainringHeading chainring2">Chainring 2</th>
-							<td class="result chainring2sprocket1">chainring2sprocket1</td>
-							<td class="result chainring2sprocket2">chainring2sprocket2</td>
-							<td class="result chainring2sprocket3">chainring2sprocket3</td>
-							<td class="result chainring2sprocket4">chainring2sprocket4</td>
-							<td class="result chainring2sprocket5">chainring2sprocket5</td>
-							<td class="result chainring2sprocket6">chainring2sprocket6</td>
-							<td class="result chainring2sprocket7">chainring2sprocket7</td>
-							<td class="result chainring2sprocket8">chainring2sprocket8</td>
-							<td class="result chainring2sprocket9">chainring2sprocket9</td>
-							<td class="result chainring2sprocket10">chainring2sprocket10</td>
-							<td class="result chainring2sprocket11">chainring2sprocket11</td>
-						</tr>
-						<tr>
-							<th class="chainringHeading chainring3">Chainring 3</th>
-							<td class="result chainring3sprocket1">chainring3sprocket1</td>
-							<td class="result chainring3sprocket2">chainring3sprocket2</td>
-							<td class="result chainring3sprocket3">chainring3sprocket3</td>
-							<td class="result chainring3sprocket4">chainring3sprocket4</td>
-							<td class="result chainring3sprocket5">chainring3sprocket5</td>
-							<td class="result chainring3sprocket6">chainring3sprocket6</td>
-							<td class="result chainring3sprocket7">chainring3sprocket7</td>
-							<td class="result chainring3sprocket8">chainring3sprocket8</td>
-							<td class="result chainring3sprocket9">chainring3sprocket9</td>
-							<td class="result chainring3sprocket10">chainring3sprocket10</td>
-							<td class="result chainring3sprocket11">chainring3sprocket11</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		
-		
-		
-	</body>
+                    </div>
+                </div>
+                <div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="crankLength" title="This value can drastically alter the way 2 identically geared bikes feel to pedal. See the info page for a more detailed explanation...">Crank length (mm):</label>
+                        <input name="crankLength" id="crankLength" class="uk-input uk-form-width-medium" placeholder="Crank length (mm)" type="number" />
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="targetCadence" title="If you enter a cadence value here your results will include the speed at this cadence for each of your gear combinations.">Target cadence (rpm):</label>
+                        <input name="targetCadence" id="targetCadence" class="uk-input uk-form-width-medium" placeholder="Target cadence (rpm)" type="number" />
+                    </div>
+
+
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="orientationToggler" title="You can display the results in a landscape or portait result table">Result table orientation:</label>
+                        <input type="radio" class="uk-radio" name="orientationToggler" id="landscape" value="landscape" checked="checked">
+                        <label for="landscape">Landscape</label>
+                        <input type="radio" class="uk-radio" name="orientationToggler" id="portrait" value="portrait">
+                        <label for="portrait">Portrait</label>
+                    </div>
+
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="unitToggler" title="You can select metric or imperial units for the results. This includes recalculating gear INCHES or METRES development into your chosen units, which might seem odd but actually makes sense!">Units:</label>
+                        <input type="radio" class="uk-radio" name="unitToggler" id="metric" value="metric" checked="checked">
+                        <label for="metric">Metric</label>
+                        <input type="radio" class="uk-radio" name="unitToggler" id="imperial" value="imperial">
+                        <label for="imperial">Imperial</label>
+                    </div>
+
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="resultsOrder" title="Control the ordering of the result table, sorting by gear ratio">Results order:</label>
+                        <input type="radio" class="uk-radio" name="resultsOrder" id="ascending" value="ascending" checked="checked">
+                        <label for="ascending">Ascending</label>
+                        <input type="radio" class="uk-radio" name="resultsOrder" id="descending" value="descending">
+                        <label for="descending">Descending</label>
+                    </div>
+
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="colourToggler" title="The results table is colour coded by default showing how relatively hard (red) or easy (green) each of the gears is to pedal in. On some displays the colouring makes the text tricky to read so you can toggle the colouring here.">Colours:</label>
+                        <input type="radio" class="uk-radio" name="colourToggler" id="colourOn" value="1" checked="checked">
+                        <label for="colourOn">Coloured</label>
+                        <input type="radio" class="uk-radio" name="colourToggler" id="colourOff" value="0">
+                        <label for="colourOff">Plain</label>
+                    </div>
+                    <div class="uk-margin">
+                        <button type="button" id="clearAll" class="uk-button uk-button-primary">Clear data</button>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-margin">
+                <table class="resultTable landscape">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="sprocketHeading sprocket1">Sprocket 1</th>
+                            <th class="sprocketHeading sprocket2">Sprocket 2</th>
+                            <th class="sprocketHeading sprocket3">Sprocket 3</th>
+                            <th class="sprocketHeading sprocket4">Sprocket 4</th>
+                            <th class="sprocketHeading sprocket5">Sprocket 5</th>
+                            <th class="sprocketHeading sprocket6">Sprocket 6</th>
+                            <th class="sprocketHeading sprocket7">Sprocket 7</th>
+                            <th class="sprocketHeading sprocket8">Sprocket 8</th>
+                            <th class="sprocketHeading sprocket9">Sprocket 9</th>
+                            <th class="sprocketHeading sprocket10">Sprocket 10</th>
+                            <th class="sprocketHeading sprocket11">Sprocket 11</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="chainringHeading chainring1">Chainring 1</th>
+                            <td class="result chainring1sprocket1">chainring1sprocket1</td>
+                            <td class="result chainring1sprocket2">chainring1sprocket2</td>
+                            <td class="result chainring1sprocket3">chainring1sprocket3</td>
+                            <td class="result chainring1sprocket4">chainring1sprocket4</td>
+                            <td class="result chainring1sprocket5">chainring1sprocket5</td>
+                            <td class="result chainring1sprocket6">chainring1sprocket6</td>
+                            <td class="result chainring1sprocket7">chainring1sprocket7</td>
+                            <td class="result chainring1sprocket8">chainring1sprocket8</td>
+                            <td class="result chainring1sprocket9">chainring1sprocket9</td>
+                            <td class="result chainring1sprocket10">chainring1sprocket10</td>
+                            <td class="result chainring1sprocket11">chainring1sprocket11</td>
+                        </tr>
+                        <tr>
+                            <th class="chainringHeading chainring2">Chainring 2</th>
+                            <td class="result chainring2sprocket1">chainring2sprocket1</td>
+                            <td class="result chainring2sprocket2">chainring2sprocket2</td>
+                            <td class="result chainring2sprocket3">chainring2sprocket3</td>
+                            <td class="result chainring2sprocket4">chainring2sprocket4</td>
+                            <td class="result chainring2sprocket5">chainring2sprocket5</td>
+                            <td class="result chainring2sprocket6">chainring2sprocket6</td>
+                            <td class="result chainring2sprocket7">chainring2sprocket7</td>
+                            <td class="result chainring2sprocket8">chainring2sprocket8</td>
+                            <td class="result chainring2sprocket9">chainring2sprocket9</td>
+                            <td class="result chainring2sprocket10">chainring2sprocket10</td>
+                            <td class="result chainring2sprocket11">chainring2sprocket11</td>
+                        </tr>
+                        <tr>
+                            <th class="chainringHeading chainring3">Chainring 3</th>
+                            <td class="result chainring3sprocket1">chainring3sprocket1</td>
+                            <td class="result chainring3sprocket2">chainring3sprocket2</td>
+                            <td class="result chainring3sprocket3">chainring3sprocket3</td>
+                            <td class="result chainring3sprocket4">chainring3sprocket4</td>
+                            <td class="result chainring3sprocket5">chainring3sprocket5</td>
+                            <td class="result chainring3sprocket6">chainring3sprocket6</td>
+                            <td class="result chainring3sprocket7">chainring3sprocket7</td>
+                            <td class="result chainring3sprocket8">chainring3sprocket8</td>
+                            <td class="result chainring3sprocket9">chainring3sprocket9</td>
+                            <td class="result chainring3sprocket10">chainring3sprocket10</td>
+                            <td class="result chainring3sprocket11">chainring3sprocket11</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="resultTable portrait">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="chainringHeading chainring1">Chainring 1</th>
+                            <th class="chainringHeading chainring2">Chainring 2</th>
+                            <th class="chainringHeading chainring3">Chainring 3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="sprocketHeading sprocket1">Sprocket 1</th>
+                            <td class="result chainring1sprocket1">chainring1sprocket1</td>
+                            <td class="result chainring2sprocket1">chainring2sprocket1</td>
+                            <td class="result chainring3sprocket1">chainring3sprocket1</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket2">Sprocket 2</th>
+                            <td class="result chainring1sprocket2">chainring1sprocket2</td>
+                            <td class="result chainring2sprocket2">chainring2sprocket2</td>
+                            <td class="result chainring3sprocket2">chainring3sprocket2</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket3">Sprocket 3</th>
+                            <td class="result chainring1sprocket3">chainring1sprocket3</td>
+                            <td class="result chainring2sprocket3">chainring2sprocket3</td>
+                            <td class="result chainring3sprocket3">chainring3sprocket3</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket4">Sprocket 4</th>
+                            <td class="result chainring1sprocket4">chainring1sprocket4</td>
+                            <td class="result chainring2sprocket4">chainring2sprocket4</td>
+                            <td class="result chainring3sprocket4">chainring3sprocket4</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket5">Sprocket 5</th>
+                            <td class="result chainring1sprocket5">chainring1sprocket5</td>
+                            <td class="result chainring2sprocket5">chainring2sprocket5</td>
+                            <td class="result chainring3sprocket5">chainring3sprocket5</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket6">Sprocket 6</th>
+                            <td class="result chainring1sprocket6">chainring1sprocket6</td>
+                            <td class="result chainring2sprocket6">chainring2sprocket6</td>
+                            <td class="result chainring3sprocket6">chainring3sprocket6</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket7">Sprocket 7</th>
+                            <td class="result chainring1sprocket7">chainring1sprocket7</td>
+                            <td class="result chainring2sprocket7">chainring2sprocket7</td>
+                            <td class="result chainring3sprocket7">chainring3sprocket7</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket8">Sprocket 8</th>
+                            <td class="result chainring1sprocket8">chainring1sprocket8</td>
+                            <td class="result chainring2sprocket8">chainring2sprocket8</td>
+                            <td class="result chainring3sprocket8">chainring3sprocket8</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket9">Sprocket 9</th>
+                            <td class="result chainring1sprocket9">chainring1sprocket9</td>
+                            <td class="result chainring2sprocket9">chainring2sprocket9</td>
+                            <td class="result chainring3sprocket9">chainring3sprocket9</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket10">Sprocket 10</th>
+                            <td class="result chainring1sprocket10">chainring1sprocket10</td>
+                            <td class="result chainring2sprocket10">chainring2sprocket10</td>
+                            <td class="result chainring3sprocket10">chainring3sprocket10</td>
+                        </tr>
+                        <tr>
+                            <th class="sprocketHeading sprocket11">Sprocket 11</th>
+                            <td class="result chainring1sprocket11">chainring1sprocket11</td>
+                            <td class="result chainring2sprocket11">chainring2sprocket11</td>
+                            <td class="result chainring3sprocket11">chainring3sprocket11</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="resultListContainer">
+
+                <p id="derailleurCapacity"></p>
+                <p>The list below shows the gear ratios in ascending order. Any gear combinations whose ratios are close (within <span id="percentageNote"></span>% of each other) are noted.</p>
+                <ul id="resultList" class="uk-list"></ul>
+            </div>
+        </form>
+
+
+
+    </div>
+</body>
+
 </html>
