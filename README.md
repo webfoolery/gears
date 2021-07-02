@@ -1,7 +1,7 @@
 # Bike Gearing Calculator
 Usage: on the calculator page you can enter cassette & chainring sizes, crank length, tyre & wheel diameter etc. Based upon the info you enter you will be able to see the results described below.
 
-There are several presets saved with common gear configurations (and a couple of my bikes) which can be useful for a quick starting point. If you want to create more presets just add a new object to the 'presets' variable.
+There are several presets saved with common gear configurations which can be useful for a quick starting point. If you want to create more presets just add a new object to the 'presets' variable.
 
 See it in action [here](https://webfoolery.github.io/gears/)
 
