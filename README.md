@@ -22,7 +22,7 @@ The formula to calculate it is (largest sprocket - smallest sprocket) + (largest
 * **Ratio list:** Underneath the results table you will see a list of all of the gear combination ratios in order, with any that are close to each other highlighted.
 
 ## Changelog
-**2021-06-29**  
+**2021-07-02**  
  - rel="noreferrer" added to external links
  - Javascript links moved to bottom of `<body>`
  - Updates README.md
