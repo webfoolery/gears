@@ -18,32 +18,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gear ratio calculator</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/css/uikit.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit-icons.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="gears.js" type="text/javascript"></script>
 </head>
 
 <body>
     <noscript>
 			<p class="noScript">You appear not to have Javascript enabled so this tool will not work for you!</p>
 		</noscript>
+
     <div class="uk-container">
-        <!-- <nav class="uk-navbar-container" uk-navbar>
+        <nav class="uk-navbar-container" uk-navbar>
             <div class="uk-navbar-left">
-                <ul class="uk-navbar-nav">
+                <h1 class="uk-text-center"><span uk-icon="icon: cog;ratio:2;"></span> Bike Gearing Calculator</h1>
+                <!-- <ul class="uk-navbar-nav">
                     <li class="uk-active">
                         <a href="./">Home</a>
                     </li>
                     <li>
                         <a href="">Info</a>
                     </li>
-                </ul>
+                </ul> -->
             </div>
-        </nav> -->
+        </nav>
 
 
-        <h1 class="uk-text-center">Bike Gearing Calculator</h1>
         <ul uk-accordion>
             <li>
                 <a class="uk-accordion-title" href="#">Info/About</a>
@@ -52,18 +50,18 @@
                     <p>There are several presets saved with common gear configurations which can be useful for a quick starting point.</p>
                     <ul>
                         <li><b>Ratio:</b> Gear Ratio describes the rotations of the output gear in relation to rotations from the input gear. A ratio of 3:1 would mean that the wheel would rotate 3 times for each rotation of the chainring.</li>
-                        <li><b>MD:</b> Metres of Development (<a href="https://en.wikipedia.org/wiki/Gear_inches#Relationship_to_metres_of_development" target="_blank" title="Click here for Wikipedias explanation">wiki</a>) describes the distance the bike
-                            will travel for each full pedal revolution.<br />The formula is <i>(wheel diameter + tyre diameter) &times; &pi; &times; gear ratio</i></li>
-                        <li><b>GI:</b> Gear Inches (<a href="https://en.wikipedia.org/wiki/Gear_inches" target="_blank" title="Click here for Wikipedias explanation">wiki</a>) also known as Effective Diameter, describes gear ratios in terms of the diameter
-                            of an equivalent directly driven wheel if the pedals were fixed to that wheel (like a Penny Farthing).<br />The formula to calculate it is <i>(wheel + tyre diameter in inches) &times; (chainring toothcount &divide; sprocket toothcount)</i></li>
+                        <li><b>MD:</b> Metres of Development (<a href="https://en.wikipedia.org/wiki/Gear_inches#Relationship_to_metres_of_development" target="_blank" rel="noreferrer" title="Click here for Wikipedias explanation">wiki</a>) describes the
+                            distance the bike will travel for each full pedal revolution.<br />The formula is <i>(wheel diameter + tyre diameter) &times; &pi; &times; gear ratio</i></li>
+                        <li><b>GI:</b> Gear Inches (<a href="https://en.wikipedia.org/wiki/Gear_inches" target="_blank" rel="noreferrer" title="Click here for Wikipedias explanation">wiki</a>) also known as Effective Diameter, describes gear ratios in terms
+                            of the diameter of an equivalent directly driven wheel if the pedals were fixed to that wheel (like a Penny Farthing).<br />The formula to calculate it is <i>(wheel + tyre diameter in inches) &times; (chainring toothcount &divide; sprocket toothcount)</i></li>
             </li>
-            <li><b>GR:</b> Gain Ratio is a <a href="https://en.wikipedia.org/wiki/Sheldon_Brown_(bicycle_mechanic)" target="_blank">Sheldon Brown</a> innovation. Traditional measurements (GI, MD etc.) don't allow for the dis/advantage of pedal arm (crank)
-                length and also make easy comparison of different gearing tricky (46/16 is the same as 53/19 - if the crank lengths are the same) so Sheldon Brown proposed a gear measurement system called <a href="http://sheldonbrown.com/gain.html" target="_blank"
-                    title="Click here for Sheldons explanation!">&quot;gain ratio&quot;</a>. It describes the ratio of distance travelled by the bike relative to the radial distance moved of the pedals.<br />His formula is <i>((wheel + tyre radius) &divide; crank length) &times; gear ratio</i>.
-                The benefits of this include:
+            <li><b>GR:</b> Gain Ratio is a <a href="https://en.wikipedia.org/wiki/Sheldon_Brown_(bicycle_mechanic)" target="_blank" rel="noreferrer">Sheldon Brown</a> innovation. Traditional measurements (GI, MD etc.) don't allow for the dis/advantage of
+                pedal arm (crank) length and also make easy comparison of different gearing tricky (46/16 is the same as 53/19 - if the crank lengths are the same) so Sheldon Brown proposed a gear measurement system called <a href="http://sheldonbrown.com/gain.html"
+                    target="_blank" rel="noreferrer" title="Click here for Sheldons explanation!">&quot;gain ratio&quot;</a>. It describes the ratio of distance travelled by the bike relative to the radial distance moved of the pedals.<br />His formula is
+                <i>((wheel + tyre radius) &divide; crank length) &times; gear ratio</i>. The benefits of this include:
                 <ol>
                     <li>Given 2 identically geared/wheeled bikes you can see a numerical representation of the mechanical dis/advantage if they have different crank lengths.</li>
-                    <li>It's <a href="https://en.wikipedia.org/wiki/Dimensionless_quantity" target="_blank">dimensionless</a>, so whether you supply the measurements in inches, mm or microns the resulting value is the same.</li>
+                    <li>It's <a href="https://en.wikipedia.org/wiki/Dimensionless_quantity" target="_blank" rel="noreferrer">dimensionless</a>, so whether you supply the measurements in inches, mm or microns the resulting value is the same.</li>
                     <li>It&#39;s like a universal language for comparing gearing, all reduced to a single number!</li>
                 </ol>
             </li>
@@ -334,6 +332,9 @@
 
 
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit-icons.min.js"></script>
+    <script src="gears.js" type="text/javascript"></script>
 </body>
 
 </html>

@@ -19,11 +19,17 @@ It's like a universal language for comparing gearing, all reduced to a single nu
 The formula is km/h = ((wheel diameter(mm) + tyre diameter(mm)) × π) × ratio × cadence × 60 / 100,000
 * **Derailleur capacity:** This will tell you what capacity derailleur you should be looking for based upon your crank & cassette.
 The formula to calculate it is (largest sprocket - smallest sprocket) + (largest chainring - smallest chainring)
+* **Ratio list:** Underneath the results table you will see a list of all of the gear combination ratios in order, with any that are close to each other highlighted.
 
 ## Changelog
 **2021-06-29**  
- - Removes JQuery & JQuery Mobile styling & Javascript
- - All javascript is now vanilla, some ES6
+ - rel="noreferrer" added to external links
+ - Javascript links moved to bottom of `<body>`
+ - Updates README.md
+
+**2021-06-29**  
+ - Removes JQuery & JQuery Mobile styling
+ - All javascript is now vanilla, some ES6, rewritten to improve efficiency
  - Adds ordering option to the results, ordering by gear ratio ascending or descending
  - Adds a list showing gear ratios in linear order and highlights those that are close together
 
